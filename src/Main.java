@@ -35,6 +35,7 @@ public class Main {
 
         displayProducts(discountedToys);
     }
+
     private static void displayMenu() {
         Scanner scanner = new Scanner(System.in);
         int choice;
