@@ -1,9 +1,8 @@
 package domain.dataModel;
-
 import domain.enums.ProductCategory;
+import java.time.LocalDate;
 
 public class Product {
-
     private Long id;
     private String name;
     private ProductCategory category;
@@ -15,7 +14,6 @@ public class Product {
         this.category = category;
         this.price = price;
     }
-
     public Long getId() {
         return id;
     }
@@ -53,7 +51,7 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
+                ", category=" + category +
                 ", price=" + price +
                 '}';
     }
