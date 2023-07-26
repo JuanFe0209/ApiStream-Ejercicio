@@ -44,7 +44,8 @@ public class Main {
             System.out.println("5. Apply discount to toys");
             System.out.println("6. Show a list of orders made by client 2 between february 1st 2021 and april 1st 2021");
             System.out.println("7. Show the cheapest product");
-            System.out.println("8. Exit");
+            System.out.println("8. Get most expensive product by category");
+            System.out.println("9. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
 
@@ -79,6 +80,20 @@ public class Main {
                     displayProducts(cheapestLibros);
                     break;
                 case 8:
+                    System.out.println("Enter the category to display the most expensive product (BOOKS, BABIES, TOYS):");
+                    String categorySelected = scanner.next();
+                    try {
+                        ProductCategory category = ProductCategory.fromCategoryName(categorySelected);
+                        Product mostExpensiveProduct = getMostExpensiveProductByCategory(category);
+                        if (mostExpensiveProduct != null) {
+                            displayProducts(Collections.singletonList(mostExpensiveProduct));
+                        } else {
+                            System.out.println("No product found in the specified category.");
+                        }
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid category.");
+                    }
+                case 9:
                     System.out.println("Closing Menu");
                     break;
                 default:
@@ -169,6 +184,13 @@ public class Main {
                         .collect(Collectors.toList()))
                 .orElse(new ArrayList<>());
     }
+    private static Product getMostExpensiveProductByCategory(ProductCategory category) {
+        return products.stream()
+                .filter(product -> product.getCategory() == category)
+                .max(Comparator.comparingDouble(Product::getPrice))
+                .orElse(null);
+    }
+
 }
 
 
