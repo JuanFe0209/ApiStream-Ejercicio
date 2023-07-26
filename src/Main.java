@@ -31,6 +31,20 @@ public class Main {
 
         displayProducts(discountedToys);
     }
+    private static void displayMostRecentOrders() {
+        System.out.println("----- 3 Most Recent Orders -----");
+        List<Order> mostRecentOrders = getMostRecentOrders(3);
+        for (Order order : mostRecentOrders) {
+            System.out.println(order);
+        }
+        System.out.println();
+    }
+    private static List<Order> getMostRecentOrders(int n) {
+        return orders.stream()
+                .sorted(Comparator.comparing(Order::getOrderDate).reversed())
+                .limit(n)
+                .collect(Collectors.toList());
+    }
 
     private static void displayMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -44,8 +58,9 @@ public class Main {
             System.out.println("5. Apply discount to toys");
             System.out.println("6. Show a list of orders made by client 2 between february 1st 2021 and april 1st 2021");
             System.out.println("7. Show the cheapest product");
-            System.out.println("8. Get most expensive product by category");
-            System.out.println("9. Exit");
+            System.out.println("8. Show the 3 most recent products");
+            System.out.println("9. Get most expensive product by category");
+            System.out.println("10. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
 
@@ -76,11 +91,13 @@ public class Main {
                 case 6:
                     displayOrdersByCustomerLevel2();
                     break;
-                case 7:List<Product> cheapestBooks = getCheapestProductsInCategory(ProductCategory.BOOKS);
+                case 7:
+                    List<Product> cheapestBooks = getCheapestProductsInCategory(ProductCategory.BOOKS);
                     displayProducts(cheapestBooks);
                     break;
-                case 8:
-                    System.out.println("Enter the category to display the most expensive product (BOOKS, BABIES, TOYS):");
+                case 8:displayMostRecentOrders();
+                break;
+                case 9:System.out.println("Enter the category to display the most expensive product (BOOKS, BABIES, TOYS):");
                     String categorySelected = scanner.next();
                     try {
                         ProductCategory category = ProductCategory.fromCategoryName(categorySelected);
@@ -93,7 +110,8 @@ public class Main {
                     } catch (IllegalArgumentException e) {
                         System.out.println("Invalid category.");
                     }
-                case 9:
+                    break;
+                case 10:
                     System.out.println("Closing Menu");
                     break;
                 default:
