@@ -1,8 +1,8 @@
 package domain.enums;
 
 public enum ClientType {
-    TEAR1,
-    TEAR2,
-    TEAR3;
+    LEVEL_1,
+    LEVEL_2,
+    LEVEL_3;
 
 }

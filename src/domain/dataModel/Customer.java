@@ -1,11 +1,13 @@
 package domain.dataModel;
 
+import domain.enums.ClientType;
+
 public class Customer {
     private Long id;
     private String name;
-    private Integer tier;
+    private ClientType tier;
 
-    public Customer(Long id, String name, Integer tier) {
+    public Customer(Long id, String name, ClientType tier) {
         this.id = id;
         this.name = name;
         this.tier = tier;
@@ -27,11 +29,11 @@ public class Customer {
         this.name = name;
     }
 
-    public Integer getTier() {
+    public ClientType getTier() {
         return tier;
     }
 
-    public void setTier(Integer tier) {
+    public void setTier(ClientType tier) {
         this.tier = tier;
     }
 

@@ -1,25 +1,27 @@
 package domain.enums;
 
 public enum ProductCategory {
-    BOOKS,
-    TOYS {
-        @Override
-        public double applyDiscount(double price) {
-            return price * 0.9;
-        }
-    },
-    BABIES;
+    BOOKS("Books"),
+    TOYS("Toys"),
+    BABIES("Babies");
 
-    public double applyDiscount(double price) {
-        return price;
+    private final String categoryName;
+
+    ProductCategory(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
     }
 
     public static ProductCategory fromCategoryName(String categoryName) {
         for (ProductCategory category : ProductCategory.values()) {
-            if (category.name().equalsIgnoreCase(categoryName)) {
+            if (category.getCategoryName().equalsIgnoreCase(categoryName)) {
                 return category;
             }
         }
         throw new IllegalArgumentException("Invalid category: " + categoryName);
     }
 }
+
