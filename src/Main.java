@@ -76,8 +76,8 @@ public class Main {
                 case 6:
                     displayOrdersByCustomerLevel2();
                     break;
-                case 7:List<Product> cheapestLibros = getCheapestProductsInCategory(ProductCategory.BOOKS);
-                    displayProducts(cheapestLibros);
+                case 7:List<Product> cheapestBooks = getCheapestProductsInCategory(ProductCategory.BOOKS);
+                    displayProducts(cheapestBooks);
                     break;
                 case 8:
                     System.out.println("Enter the category to display the most expensive product (BOOKS, BABIES, TOYS):");
