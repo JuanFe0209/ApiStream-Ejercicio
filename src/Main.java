@@ -59,8 +59,11 @@ public class Main {
             System.out.println("6. Show a list of orders made by client 2 between february 1st 2021 and april 1st 2021");
             System.out.println("7. Show the cheapest product");
             System.out.println("8. Show the 3 most recent products");
-            System.out.println("9. Get most expensive product by category");
-            System.out.println("10. Exit");
+            System.out.println("9. Global Sum of orders made in an specific date");
+            System.out.println("10. Global promedium of orders made in an especific date");
+            System.out.println("11. Show a Map with the clients information");
+            System.out.println("12. Get most expensive product by category");
+            System.out.println("13. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
 
@@ -97,7 +100,19 @@ public class Main {
                     break;
                 case 8:displayMostRecentOrders();
                 break;
-                case 9:System.out.println("Enter the category to display the most expensive product (BOOKS, BABIES, TOYS):");
+                case 9:
+                    System.out.println(calculateGlobalSum());
+                    break;
+                case 10:
+                    System.out.println(calculateGlobalPromedium());
+                    break;
+                case 11:
+                    Map<Customer,List<Order>> result = orders
+                            .stream()
+                            .collect(Collectors.groupingBy(Order::getCustomer));
+                    System.out.println(result);
+                    break;
+                case 12:System.out.println("Enter the category to display the most expensive product (BOOKS, BABIES, TOYS):");
                     String categorySelected = scanner.next();
                     try {
                         ProductCategory category = ProductCategory.fromCategoryName(categorySelected);
@@ -111,13 +126,13 @@ public class Main {
                         System.out.println("Invalid category.");
                     }
                     break;
-                case 10:
+                case 13:
                     System.out.println("Closing Menu");
                     break;
                 default:
                     System.out.println("Wrong option, please try again.");
             }
-        } while (choice != 7);
+        } while (choice != 13);
 
         scanner.close();
     }
@@ -163,10 +178,9 @@ public class Main {
         orders = new ArrayList<>();
         orders.add(new Order(1L, "Pending", LocalDate.of(2022, 3, 1), LocalDate.of(2022, 3, 5), Arrays.asList(products.get(0), products.get(3)), customers.get(0)));
         orders.add(new Order(2L, "Sent", LocalDate.of(2022, 3, 2), LocalDate.of(2022, 3, 10), Arrays.asList(products.get(1), products.get(4)), customers.get(1)));
-        orders.add(new Order(3L, "Pending", LocalDate.of(2022, 3, 3), LocalDate.of(2022, 3, 15), Arrays.asList(products.get(2), products.get(3), products.get(4)), customers.get(2)));
+        orders.add(new Order(3L, "Pending", LocalDate.of(2021, 3, 15), LocalDate.of(2022, 3, 15), Arrays.asList(products.get(2), products.get(3), products.get(4)), customers.get(2)));
         orders.add(new Order(4L, "Sent", LocalDate.of(2021, 2, 18), LocalDate.of(2021, 2, 20), Arrays.asList(products.get(2), products.get(3), products.get(4)), customers.get(2)));
         orders.add(new Order(5L, "Sent", LocalDate.of(2021, 3, 5), LocalDate.of(2021, 3, 10), Arrays.asList(products.get(0), products.get(5)), customers.get(1)));
-
     }
 
     private static List<Product> filterProductsByCategory(ProductCategory category) {
@@ -201,6 +215,24 @@ public class Main {
                         .filter(product -> product.getPrice() == minProduct.getPrice())
                         .collect(Collectors.toList()))
                 .orElse(new ArrayList<>());
+    }
+
+    public static double calculateGlobalSum() {
+        return orders
+                .stream()
+                .filter(o -> o.getOrderDate().compareTo(LocalDate.of(2021, 2, 1)) >= 0)
+                .filter(o -> o.getOrderDate().compareTo(LocalDate.of(2021, 3, 1)) < 0)
+                .flatMap(o -> o.getProducts().stream())
+                .mapToDouble(p -> p.getPrice())
+                .sum();
+    }
+    public static double calculateGlobalPromedium(){
+        return orders
+                .stream()
+                .filter(o -> o.getOrderDate().isEqual(LocalDate.of(2021,3,15)))
+                .flatMap(o -> o.getProducts().stream())
+                .mapToDouble(p -> p.getPrice())
+                .average().getAsDouble();
     }
     private static Product getMostExpensiveProductByCategory(ProductCategory category) {
         return products.stream()
